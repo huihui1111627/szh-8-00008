@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>舞台机械联排控制系统</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <span class="logo">🎭</span>
+    <div>
+      <h1>舞台机械联排控制台</h1>
+      <span class="sub">升降台 · 旋转舞台 · 吊杆 · 演员走位 同步编排</span>
+    </div>
+  </div>
+
+  <div class="transport">
+    <button id="btnResume" title="从最近确认的场记点恢复">⏮ 场记恢复</button>
+    <button id="btnPlay" class="primary">▶ 预演</button>
+    <button id="btnStop" title="中断排练">⏹ 中断</button>
+    <select id="playRate" title="回放速率">
+      <option value="0.5">0.5×</option>
+      <option value="1" selected>1×</option>
+      <option value="2">2×</option>
+    </select>
+    <div class="clock"><span id="clockNow">0.0</span>s / <span id="clockEnd">60</span>s</div>
+    <button id="btnMark">🚩 确认场记点</button>
+    <button id="btnPause" title="在播放头处为所选/正在执行的动作插入 2s 临时停顿">⏸ 插入停顿</button>
+    <button id="btnExecute" class="danger">🔒 执行</button>
+  </div>
+</header>
+
+<div id="banner" class="banner hidden"></div>
+
+<main class="layout">
+  <section class="stage-col">
+    <div class="card stage-card">
+      <div class="card-h">
+        <h2>舞台俯视预演</h2>
+        <div id="stageLegend" class="legend"></div>
+      </div>
+      <div class="stage-wrap">
+        <canvas id="stageCanvas"></canvas>
+        <div id="liveStatus" class="live-status"></div>
+      </div>
+    </div>
+
+    <div id="comparePanel" class="card compare-card hidden">
+      <div class="card-h">
+        <h2>版本并排回放</h2>
+        <div class="row-gap">
+          <span id="compareDelta" class="delta"></span>
+          <button id="btnCloseCompare" class="ghost">关闭对比</button>
+        </div>
+      </div>
+      <div class="compare-grid">
+        <div class="compare-side">
+          <h3 id="cmpNameA"></h3>
+          <canvas id="cmpCanvasA"></canvas>
+          <div class="cmp-tl" id="cmpTlA"></div>
+          <div id="cmpStatA" class="cmp-stat"></div>
+        </div>
+        <div class="compare-side">
+          <h3 id="cmpNameB"></h3>
+          <canvas id="cmpCanvasB"></canvas>
+          <div class="cmp-tl" id="cmpTlB"></div>
+          <div id="cmpStatB" class="cmp-stat"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card timeline-card">
+      <div class="card-h">
+        <h2>时间轴 · 运动区间与舞台占用</h2>
+        <div class="row-gap">
+          <button id="btnZoomOut" class="ghost">－</button>
+          <button id="btnZoomIn" class="ghost">＋</button>
+          <button id="btnZoomFit" class="ghost">适应</button>
+        </div>
+      </div>
+      <div id="timelineScroll" class="timeline-scroll">
+        <div id="timeline" class="timeline">
+          <div class="tl-corner"></div>
+          <div id="tlRuler" class="tl-ruler"></div>
+          <div id="tlTracks" class="tl-tracks"></div>
+          <div id="tlConflictLane" class="tl-conflict-lane"></div>
+          <div id="playhead" class="playhead"></div>
+        </div>
+      </div>
+      <div id="inspector" class="inspector hidden"></div>
+    </div>
+  </section>
+
+  <aside class="side-col">
+    <div class="card side-card">
+      <div class="tabs">
+        <button class="tab active" data-tab="conflicts">冲突 <span id="badgeConf" class="badge hidden">0</span></button>
+        <button class="tab" data-tab="marks">场记</button>
+        <button class="tab" data-tab="versions">版本</button>
+      </div>
+      <div class="tab-body">
+        <div id="tab-conflicts" class="tab-pane active"></div>
+        <div id="tab-marks" class="tab-pane"></div>
+        <div id="tab-versions" class="tab-pane"></div>
+      </div>
+    </div>
+  </aside>
+</main>
+
+<div id="toast" class="toast hidden"></div>
+<script src="app.js"></script>
+</body>
+</html>
