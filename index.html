@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>舞台机械联排控制台</title>
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<div id="app">
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">🎭</span>
+      <div>
+        <h1>舞台机械联排控制台</h1>
+        <div class="sub">升降台 · 旋转舞台 · 吊杆 · 演员走位 时间轴联动</div>
+      </div>
+    </div>
+    <div class="transport">
+      <button id="btn-play" class="primary" title="预演（无冲突时可执行）">▶ 预演</button>
+      <button id="btn-stop">⏹ 停止</button>
+      <button id="btn-exec">🚦 执行</button>
+      <span class="clock"><span id="clock">0.0</span>s / <span id="duration">0</span>s</span>
+      <select id="speed-select">
+        <option value="0.5">0.5×</option>
+        <option value="1" selected>1×</option>
+        <option value="2">2×</option>
+        <option value="4">4×</option>
+      </select>
+    </div>
+    <div class="safetystat" id="safety-stat">
+      <span class="dot"></span><span id="safety-text">检测中…</span>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="col col-stage">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>舞台预演（俯视）</h2>
+          <div class="hint">机械运动实时可见 · 红点=冲突中的资源</div>
+        </div>
+        <div id="stage-wrap"></div>
+        <div class="cue-bar">
+          <div class="cue-actions">
+            <button id="btn-cue">🚩 标记场记点</button>
+            <button id="btn-resume">↩ 从最近场记点恢复</button>
+          </div>
+          <div id="cue-list" class="cue-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="col col-timeline">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>时间轴</h2>
+          <div class="hint">拖动片段改时间 · 拖右缘改速度 · 选中后在下方插入停顿</div>
+        </div>
+        <div id="timeline-scroll" class="timeline-scroll">
+          <div id="timeline" class="timeline"></div>
+        </div>
+        <div id="conflict-bar" class="conflict-bar"></div>
+      </div>
+
+      <div class="panel inspector-panel">
+        <div class="panel-head"><h2>动作检视</h2></div>
+        <div id="inspector" class="inspector">未选中动作。在时间轴上点击任意片段。</div>
+      </div>
+    </section>
+
+    <aside class="col col-side">
+      <div class="panel">
+        <div class="panel-head"><h2>版本</h2></div>
+        <div class="version-actions">
+          <button id="btn-version">⎘ 存为新版本</button>
+          <button id="btn-compare">⇄ 并排对比</button>
+          <button id="btn-reset">↺ 恢复初始场次</button>
+        </div>
+        <ul id="version-list" class="version-list"></ul>
+        <div id="diff-view" class="diff-view"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h2>冲突清单</h2></div>
+        <ul id="conflict-list" class="conflict-list"></ul>
+      </div>
+    </aside>
+  </main>
+</div>
+
+<div id="compare-overlay" class="compare-overlay hidden">
+  <div class="compare-head">
+    <h2>版本并排回放</h2>
+    <div class="transport">
+      <button id="cmp-play">▶ 同步预演</button>
+      <button id="cmp-stop">⏹</button>
+      <span class="clock"><span id="cmp-clock">0.0</span>s</span>
+      <button id="cmp-close" class="ghost">关闭对比</button>
+    </div>
+  </div>
+  <div class="compare-grid">
+    <div class="cmp-col"><h3 id="cmp-name-a"></h3><div id="cmp-stage-a"></div><div id="cmp-meta-a" class="cmp-meta"></div></div>
+    <div class="cmp-col"><h3 id="cmp-name-b"></h3><div id="cmp-stage-b"></div><div id="cmp-meta-b" class="cmp-meta"></div></div>
+  </div>
+  <div id="cmp-diff" class="cmp-diff"></div>
+</div>
+
+<script src="js/core.js"></script>
+<script src="js/stage.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

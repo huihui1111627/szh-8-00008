@@ -1,0 +1,9 @@
+{
+  "name": "stage-rehearsal-console",
+  "version": "1.0.0",
+  "description": "大型剧院机械（升降台/旋转舞台/吊杆/演员走位）联排时间轴控制台",
+  "private": true,
+  "scripts": {
+    "test": "node --test test/core.test.js"
+  }
+}
